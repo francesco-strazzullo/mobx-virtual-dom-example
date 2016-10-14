@@ -1,0 +1,33 @@
+{
+  "name": "virtual-dom-examples",
+  "version": "1.0.0",
+  "description": "Virtual Dom Examples",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/francesco-strazzullo/virtual-dom-examples.git"
+  },
+  "keywords": [
+    "Virtal",
+    "Dom"
+  ],
+  "author": "francesco-strazzullo (francesco.strazzullo86@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/francesco-strazzullo/virtual-dom-examples/issues"
+  },
+  "homepage": "https://github.com/francesco-strazzullo/virtual-dom-examples#readme",
+  "dependencies": {
+    "virtual-dom": "2.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
+  }
+}
