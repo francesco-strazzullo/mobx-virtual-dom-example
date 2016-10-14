@@ -1,44 +1,84 @@
 import {h,diff,patch,create} from 'virtual-dom';
+import {observable, autorun} from 'mobx';
 
-let left = 0;
-let top = 0;
+const STEP = 20;
 
-const move = () => {
-    const newTree = render({left,top});
-    const patches = diff(tree, newTree);
-    rootNode = patch(rootNode, patches);
-    tree = newTree;
+let lastRenderedTree = false;
+
+const onRightButton = () => {
+    state.left += STEP;
 };
 
-const onInputChange = (event) => {
-    left = parseInt(event.target.value,10);
+const onLeftButton = () => {
+    state.left -= STEP;
 };
+
+const onUpButton = () => {
+    state.top -= STEP;
+};
+
+const onDownButton = () => {
+    state.top += STEP;
+};
+
+const state = observable({
+    left:200,
+    top:0,
+    get patches(){
+        if(!lastRenderedTree){
+            return;
+        }
+
+        const position = {
+            left:state.left,
+            top:state.top
+        };
+
+        const newTree = render(position);
+        const patches = diff(lastRenderedTree, newTree);
+
+        return patches;
+    }
+});
 
 const render = ({left,top}) => {
 
-    const input = h('input', {
-        type: 'text',
-        value: left,
-        oninput:onInputChange
-    });
-
-    return h('div', {
+    const square = h('div',{
         style: {
-            textAlign: 'center',
-            lineHeight: '100px',
-            border: '1px solid red',
+            backgroundColor: 'red',
             width: '100px',
             height: '100px',
             position: 'fixed',
             left: left + 'px',
             top: top + 'px'
-        },
-        onclick: move
-    },['Click to move',input]);
+        }
+    });
+
+    const leftButton = h('button',{
+        onclick:onLeftButton
+    },['Left']);
+
+    const rightButton = h('button',{
+        onclick:onRightButton
+    },['Right']);
+
+    const upButton = h('button',{
+        onclick:onUpButton
+    },['Up']);
+
+    const downButton = h('button',{
+        onclick:onDownButton
+    },['Down']);
+
+    return h('div', {},[leftButton,rightButton,upButton,downButton,square]);
 };
 
-let tree = render({left,top});
+lastRenderedTree = render(state);
 
-let rootNode = create(tree);
+let rootNode = create(lastRenderedTree);
+
+autorun(() => {
+    rootNode = patch(rootNode, state.patches);
+});
 
 document.body.appendChild(rootNode);
