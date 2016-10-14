@@ -10,7 +10,3 @@ document.body.appendChild(rootNode);
 autorun(() => {
     rootNode = patch(rootNode, state.patches);
 });
-
-autorun(() => {
-   console.log(state.patches);
-});
